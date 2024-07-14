@@ -11,6 +11,7 @@ namespace BookCollectorWebAPI
 {
     public class Program
     {
+        static BotLauncher? botLauncher = null;
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -38,7 +39,7 @@ namespace BookCollectorWebAPI
                 return new TelegramBotClient(token!);
             });
             var app = builder.Build();
-            var botLauncher = new BotLauncher(app.Services.GetRequiredService<ITelegramBotClient>(), app.Configuration);
+            botLauncher = new BotLauncher(app.Services.GetRequiredService<ITelegramBotClient>(), app.Configuration);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -56,7 +57,7 @@ namespace BookCollectorWebAPI
             app.UseMiddleware<ExceptionHandlerMiddleware>();
             
             app.Run();
-
+            
         }
     }
 }
